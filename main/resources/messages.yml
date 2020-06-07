@@ -1,0 +1,140 @@
+#                                                                                 #
+# W.I.P Not everything is translatable at the moment! Please wait for new update! #
+#                                                                                 #
+commands:
+  unknowncommand: "&cUnknown subcommand &e{command}"
+  nopermission: "&7You don't have permission: &e{permission}"
+  missingplayer: "&cYou need to specify the player"
+  unknownplayer: "&7Could not find player with name: &e{player}&7!"
+  notnumber: "&e{input}&7 is not a number!"
+  reloadsuccess: "&aSuccessfully reloaded files! Took: &e{time}&ams"
+
+linking:
+  linked: "&aSuccessfully linked"
+  tofar: "&cTo far away"
+  start: "&7Started linking process"
+  stop: "&7Stopped linking process"
+  alreadylinked: "&cThis container is already linked to this beacon!"
+  cancel: "&cCanceled linking!"
+
+
+beacons:
+  cantplace: "&cNo permission! PLACE"
+  cantbreak: "&cNo permission! BREAK"
+  cantuse: "&cNo permission! USE"
+
+economy:
+  nomoney: "&cSorry but you don't have enough money!"
+  success: "&aSuccessfully upgraded the beacon!"
+
+
+GUI:
+  modules_label: "&bModules"
+  main_label: "{beacon}"
+  effects_label: "&bEffects"
+  icons: # New
+    link:
+      name: "&eLink"
+      lore:
+        - "&7Links: {current}/{max}"
+    upgrade_eco:
+      name: "&eUpgrade with economy"
+      lore:
+        - "&7Price: &e{price}&7$"
+    upgrade_maxed:
+      name: "&eUpgrade beacon"
+      lore:
+        - "&cAlready maxed!"
+    module_select:
+      name: "&eSelect module"
+      lore:
+        - "&7Click to open menu"
+    effect_select:
+      name: "&eSelect effect"
+      lore:
+        - "&7Currently selected: {effect}"
+    beacon_stats:
+      name: "&eBeacon stats"
+      lore:
+        - "&7Level: &e{level}"
+        - "&7Effect: &e{effect}"
+
+
+effects_colors: # RGB (r,g,b)
+  REGENERATION: "255:9:9"
+  ABSORPTION: "255:157:9"
+  BAD_OMEN: "98:13:0"
+  BLINDNESS: "101:101:101"
+  CONDUIT_POWER: "24:229:202"
+  CONFUSION: "245:23:104"
+  DAMAGE_RESISTANCE: "68:68:68"
+  DOLPHINS_GRACE: "14:196:252"
+  FAST_DIGGING: "255:231:3"
+  FIRE_RESISTANCE: "255:96:3"
+  GLOWING: "250:246:243"
+  HARM: "255:10:43"
+  HEAL: "255:10:10"
+  HEALTH_BOOST: "252:78:78"
+  HERO_OF_THE_VILLAGE: "78:252:125"
+  HUNGER: "96:192:85"
+  INCREASE_DAMAGE: "255:11:126"
+  INVISIBILITY: "255:255:255"
+  JUMP: "83:252:32"
+  UNLUCK: "83:252:32"
+  WATER_BREATHING: "21:139:255"
+  WEAKNESS: "113:114:113"
+  WITHER: "14:58:0"
+  LEVITATION: "178:216:255"
+  LUCK: "2:218:31"
+  NIGHT_VISION: "22:7:242"
+  POISON: "0:255:102"
+  SATURATION: "0:255:102"
+  SLOW_DIGGING: "71:71:71"
+  SLOW_FALLING: "118:249:249"
+  DOLPHINS_GRACE": "118:249:249"
+  SLOW: "101:101:101"
+  SPEED: "199:255:255"
+
+
+modules:
+  format: "&6{module} &7{status}"
+  farm: "Farm"
+  effects: "Effects"
+  protect: "Protection"
+  breed: "Breeding"
+
+effects:
+  format: "&6{effect} &7{level}"
+  REGENERATION: "Regeneration"
+  ABSORPTION: "Absorption"
+  BAD_OMEN: "Bad omen"
+  BLINDNESS: "Blindness"
+  CONDUIT_POWER: "Conduit"
+  CONFUSION: "Nausea"
+  DAMAGE_RESISTANCE: "Resistance"
+  DOLPHINS_GRACE: "Dolphins grace"
+  FAST_DIGGING: "Haste"
+  FIRE_RESISTANCE: "Fire resistance"
+  GLOWING: "Glow"
+  HARM: "Instant damage"
+  HEAL: "Instant heal"
+  HEALTH_BOOST: "Health boost"
+  HERO_OF_THE_VILLAGE: "Hero of the village"
+  HUNGER: "Hunger"
+  INCREASE_DAMAGE: "Strength"
+  INVISIBILITY: "Invisibility"
+  JUMP: "Jump boost"
+  UNLUCK: "Unluck"
+  WATER_BREATHING: "Water breathing"
+  WEAKNESS: "Weakness"
+  WITHER: "Wither"
+  LEVITATION: "Levitation"
+  LUCK: "Luck"
+  NIGHT_VISION: "Night vision"
+  POISON: "Poison"
+  SATURATION: "Saturation"
+  SLOW_DIGGING: "Slow digging"
+  SLOW_FALLING: "Slow falling"
+  DOLPHINS_GRACE": "Dolphins grace"
+  SLOW: "Slowness"
+  SPEED: "Speed"

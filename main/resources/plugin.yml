@@ -1,0 +1,53 @@
+name: "SimpleBeacons"
+main: eu.virtusdevelops.simplebeacons.SimpleBeacons
+version: @version@
+author: "gaspercino123"
+api-version: "1.14"
+
+commands:
+  simplebeacons:
+    description: "Simple Beacons command"
+    usage: /simplebeacons
+
+depend:
+  - Vault
+
+permissions:
+  simplebeacons.use:
+    default: op
+  simplebeacons.command.about:
+    default: not op
+  simplebeacons.place:
+    default: op
+  simplebeacons.break:
+    default: op
+  simplebeacons.selecteffect:
+    default: op
+  simplebeacons.selectmodules:
+    default: op
+  simplebeacons.linkbeacon:
+    default: op
+  simplebeacons.upgrade.eco:
+    default: op
+  simplebeacons.command.give:
+    default: op
+  simplebeacons.command.reload:
+    default: op
+  simplecrops.command.*:
+    description: Gives access to all SimpleBeacon commands.
+    default: op
+    children:
+      simplebeacons.command.reload: true
+      simplebeacons.command.give: true
+  simplebeacons.default:
+    description: Gives access to basic functionality.
+    default: op
+    children:
+      simplebeacons.use: true
+      simplebeacons.break: true
+      simplebeacons.place: true
+      simplebeacons.upgrade.eco: true
+      simplebeacons.selecteffect: true
+      simplebeacons.linkbeacon: true
+      simplebeacons.selectmodules: true
+      simplebeacons.command.about: true
