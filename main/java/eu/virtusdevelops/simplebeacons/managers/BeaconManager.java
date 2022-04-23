@@ -5,11 +5,11 @@ import eu.virtusdevelops.simplebeacons.managers.modules.*;
 import eu.virtusdevelops.simplebeacons.storage.BeaconHandler;
 import eu.virtusdevelops.simplebeacons.storage.MessagesHandler;
 import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 
-public class BeaconManager extends BukkitRunnable {
+public class BeaconManager {
 
     private static BeaconManager instance;
     private BeaconHandler beaconHandler;
@@ -20,46 +20,53 @@ public class BeaconManager extends BukkitRunnable {
     private Modul breedModul = new BreedingModul();
     private Modul itemModul = new ItemModul();
 
+    private BukkitTask task;
+
     public BeaconManager(BeaconHandler beaconHandler, SimpleBeacons simpleBeacons, MessagesHandler messagesHandler){
         this.beaconHandler = beaconHandler;
         this.plugin = simpleBeacons;
         this.messagesHandler = messagesHandler;
+
+
     }
-    public BeaconManager startTask(SimpleBeacons plug, BeaconHandler beaconHandler) {
+    public void startTask(SimpleBeacons plug, BeaconHandler beaconHandler) {
         this.plugin = plug;
         this.beaconHandler = beaconHandler;
-        if (instance == null) {
-            instance = new BeaconManager(beaconHandler, plug, messagesHandler);
-            int tickrate = plugin.getConfig().getInt("BEACON_TICK_RATE");
-            instance.runTaskTimer(plug, 50L, tickrate);
+
+        if(task != null) {
+            task.cancel();
         }
-        return instance;
+
+        task = Bukkit.getScheduler().runTaskTimer(plugin, this::task, 0L, plugin.getConfig().getInt("BEACON_TICK_RATE"));
+
+
     }
 
-
-    @Override
-    public void run() {
+    public void task() {
         long time = System.currentTimeMillis();
         new HashMap<>(beaconHandler.getBeacons()).forEach((location, beaconData) ->{
             int tickrate = plugin.getConfig().getInt("BEACON_TICK_RATE");
 
-            for(String modul : beaconData.enabledModules){
-                if(modul.equalsIgnoreCase("effects:enabled")){
-                    effectsModule.run(beaconData, tickrate, plugin);
-                }else if(modul.equalsIgnoreCase("protect:enabled")){
-                    protectModule.run(beaconData, tickrate, plugin);
-                }else if(modul.equalsIgnoreCase("breed:enabled")){
-                    breedModul.run(beaconData, tickrate, plugin);
-                }else if(modul.equalsIgnoreCase("item:enabled")){
-                    itemModul.run(beaconData, tickrate,plugin);
+            for(Module modul : beaconData.getEnabledModules()){
+                switch (modul) {
+                    case EFFECTS -> {
+                        effectsModule.run(beaconData, tickrate, plugin);
+                    }
+                    case PROTECT -> {
+                        protectModule.run(beaconData, tickrate, plugin);
+                    }
+                    case BREED -> {
+                        breedModul.run(beaconData, tickrate, plugin);
+                    }
+                    case ITEM -> {
+                        itemModul.run(beaconData, tickrate, plugin);
+                    }
+                    default -> {
+                    }
                 }
             }
 
-            //beaconData.giveEffects(tickrate);
-            //beaconData.blockEffects(plugin);
-            //Bukkit.getConsoleSender().sendMessage("Beacon: " + location);
         });
         messagesHandler.debug("&8[&6Debug&8] &7Took: {time}&ems &7to update beacons", "{time}:" + (System.currentTimeMillis() - time));
-        //Bukkit.getConsoleSender().sendMessage("Took: " + (System.currentTimeMillis() - time) + "ms to process all beacons" );
     }
 }

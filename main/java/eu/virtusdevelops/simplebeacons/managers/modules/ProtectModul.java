@@ -17,7 +17,7 @@ public class ProtectModul extends Modul{
 
     @Override
     public void run(BeaconData beaconData, int tickRate, SimpleBeacons simpleBeacons) {
-        Location loc = new Location(Bukkit.getWorld(beaconData.beaconLocation.world), beaconData.beaconLocation.x, beaconData.beaconLocation.y, beaconData.beaconLocation.z);
+        Location loc = new Location(Bukkit.getWorld(beaconData.getBeaconLocation().world), beaconData.getBeaconLocation().x, beaconData.getBeaconLocation().y, beaconData.getBeaconLocation().z);
         Block block = loc.getBlock();
         if (beaconData.isChunkLoaded()) {
             Beacon beacon = (Beacon) block.getState();
@@ -26,7 +26,7 @@ public class ProtectModul extends Modul{
                 chunkList.stream().filter(Chunk::isLoaded).map(Chunk::getEntities).filter(entities -> entities.length > 0)
                         .forEach(entities -> Arrays.stream(entities).filter(entity -> entity instanceof Monster).forEach(entity -> {
                             Monster monster = (Monster) entity;
-                            monster.damage(beacon.getTier()*beaconData.level);
+                            monster.damage(beacon.getTier()*beaconData.getLevel());
 
                         }));
             }

@@ -1,7 +1,7 @@
 package eu.virtusdevelops.simplebeacons.storage;
 
 import eu.virtusdevelops.simplebeacons.SimpleBeacons;
-import eu.virtusdevelops.simplebeacons.utils.TextFormater;
+import eu.virtusdevelops.virtuscore.utils.HexUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -35,11 +35,11 @@ public class MessagesData {
                 messagesFile.createNewFile();
                 messagesconfiguration = YamlConfiguration.loadConfiguration(messagesFile);
                 plugin.saveResource("messages.yml", true);
-                Bukkit.getConsoleSender().sendMessage(TextFormater.sFormatText("&aSuccessfully created messages.yml file!"));
+                Bukkit.getConsoleSender().sendMessage(HexUtil.colorify("&aSuccessfully created messages.yml file!"));
 
 
             }catch (IOException e){
-                Bukkit.getConsoleSender().sendMessage(TextFormater.sFormatText("&cFailed to create messages.yml file, Error: &f" + e.getMessage()));
+                Bukkit.getConsoleSender().sendMessage(HexUtil.colorify("&cFailed to create messages.yml file, Error: &f" + e.getMessage()));
 
             }
 
@@ -55,14 +55,14 @@ public class MessagesData {
     public void saveMessages(){
         try{
             messagesconfiguration.save(messagesFile);
-            Bukkit.getConsoleSender().sendMessage(TextFormater.sFormatText("&aSuccessfully saved messages.yml file."));
+            Bukkit.getConsoleSender().sendMessage(HexUtil.colorify("&aSuccessfully saved messages.yml file."));
         }catch(IOException e){
-            Bukkit.getConsoleSender().sendMessage(TextFormater.sFormatText("&cFailed to save messages.yml file, Error: &f" + e.getMessage()));
+            Bukkit.getConsoleSender().sendMessage(HexUtil.colorify("&cFailed to save messages.yml file, Error: &f" + e.getMessage()));
         }
     }
 
     public void reloadMessages() {
         messagesconfiguration = YamlConfiguration.loadConfiguration(messagesFile);
-        Bukkit.getConsoleSender().sendMessage(TextFormater.sFormatText("&aReloaded messages.yml file."));
+        Bukkit.getConsoleSender().sendMessage(HexUtil.colorify("&aReloaded messages.yml file."));
     }
 }

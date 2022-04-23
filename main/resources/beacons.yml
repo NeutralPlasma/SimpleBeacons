@@ -1,0 +1,86 @@
+beacons:
+  1:
+    name: "&7Simple beacon" # Specify item name.
+    lore: # Specify item lore.
+      - "&7Level &e{level}"
+      - "&7Place me down!"
+    linkamount: 2
+    linkDistance: 30
+    modules:
+      - "FARM"
+      - "EFFECTS"
+    effects: # <effectname>:<level> Only visible for this level of beacon.
+      - "ABSORPTION"
+      - "BAD_OMEN"
+      - "BLINDNESS"
+      - "CONDUIT_POWER"
+      - "CONFUSION"
+      - "DAMAGE_RESISTANCE"
+      - "DOLPHINS_GRACE"
+
+  2:
+    name: "&7Simple beacon"
+    price: 10000.0 # Specify price for level up from previus level to this one (Economy)
+    lore:
+      - "&7Level &e{level}"
+      - "&7Place me down!"
+    linkamount: 2
+    linkDistance: 30
+    modules:
+      - "FARM"
+      - "EFFECTS"
+  3:
+    name: "&7Simple beacon"
+    price: 10000.0
+    lore:
+      - "&7Level &e{level}"
+      - "&7Place me down!"
+    linkamount: 2
+    linkDistance: 30
+    modules:
+      - "FARM"
+      - "EFFECTS"
+  4:
+    name: "&7Simple beacon"
+    price: 10000.0
+    lore:
+      - "&7Level &e{level}"
+      - "&7Place me down!"
+    linkamount: 2
+    linkDistance: 30
+    modules:
+      - "FARM"
+      - "EFFECTS"
+  5:
+    name: "&7Simple beacon"
+    price: 10000.0
+    lore:
+      - "&7Level &e{level}"
+      - "&7Place me down!"
+    linkamount: 2
+    linkDistance: 30
+    modules:
+      - "FARM"
+      - "EFFECTS"
+  6:
+    name: "&7Simple beacon"
+    price: 10000.0
+    lore:
+      - "&7Level &e{level}"
+      - "&7Place me down!"
+    linkamount: 2
+    linkDistance: 30
+    modules:
+      - "FARM"
+      - "EFFECTS"
+  7:
+    name: "&7Simple beacon"
+    price: 10000.0
+    lore:
+      - "&7Level &e{level}"
+      - "&7Place me down!"
+    linkamount: 2
+    linkDistance: 30
+    modules:
+    - "FARM"
+    - "EFFECTS"

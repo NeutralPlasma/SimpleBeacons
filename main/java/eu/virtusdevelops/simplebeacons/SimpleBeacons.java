@@ -1,29 +1,23 @@
 package eu.virtusdevelops.simplebeacons;
 
-import eu.virtusdevelops.simplebeacons.command.CommandHandler;
-import eu.virtusdevelops.simplebeacons.command.MainCommand;
-import eu.virtusdevelops.simplebeacons.command.TabComplete;
-import eu.virtusdevelops.simplebeacons.command.commands.AboutCommand;
-import eu.virtusdevelops.simplebeacons.command.commands.GiveCommand;
-import eu.virtusdevelops.simplebeacons.command.commands.ReloadCommand;
 import eu.virtusdevelops.simplebeacons.data.BeaconData;
-import eu.virtusdevelops.simplebeacons.events.CloseInventoryEvent;
-import eu.virtusdevelops.simplebeacons.events.InventoryOpenEvent;
-import eu.virtusdevelops.simplebeacons.events.OnClickEvent;
 import eu.virtusdevelops.simplebeacons.events.beacons.BeaconBreak;
 import eu.virtusdevelops.simplebeacons.events.beacons.BeaconInteract;
 import eu.virtusdevelops.simplebeacons.events.beacons.BeaconPlace;
-import eu.virtusdevelops.simplebeacons.gui.Handler;
 import eu.virtusdevelops.simplebeacons.managers.BeaconManager;
 import eu.virtusdevelops.simplebeacons.managers.BeaconManagerHeavy;
-import eu.virtusdevelops.simplebeacons.storage.BeaconHandler;
-import eu.virtusdevelops.simplebeacons.storage.DataStorage;
-import eu.virtusdevelops.simplebeacons.storage.MessagesData;
-import eu.virtusdevelops.simplebeacons.storage.MessagesHandler;
+import eu.virtusdevelops.simplebeacons.newCommands.AboutCommand;
+import eu.virtusdevelops.simplebeacons.newCommands.GiveCommand;
+import eu.virtusdevelops.simplebeacons.newCommands.ReloadCommand;
+import eu.virtusdevelops.simplebeacons.storage.*;
 import eu.virtusdevelops.simplebeacons.utils.NBT.Current;
 import eu.virtusdevelops.simplebeacons.utils.NBT.Legacy;
 import eu.virtusdevelops.simplebeacons.utils.NBT.NBT;
-import eu.virtusdevelops.simplebeacons.utils.TextFormater;
+import eu.virtusdevelops.virtuscore.command.CommandManager;
+import eu.virtusdevelops.virtuscore.gui.Handler;
+import eu.virtusdevelops.virtuscore.managers.FileManager;
+import eu.virtusdevelops.virtuscore.utils.FileLocation;
+import eu.virtusdevelops.virtuscore.utils.HexUtil;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
@@ -32,23 +26,25 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 
 public class SimpleBeacons extends JavaPlugin {
 
-    private DataStorage dataStorage;
+    private SQLStorage storage;
     private MessagesHandler messagesHandler;
     private MessagesData messagesData;
     private Current current;
     private Legacy legacy;
     private NBT nbt;
-    private Handler handler;
     private BeaconHandler beaconHandler;
     private BeaconManager beaconManager;
     private BeaconManagerHeavy beaconManagerHeavy;
     private BeaconInteract beaconInteract;
-    private List<String> modules = new ArrayList<>();
+    private FileManager fileManager;
+    private Handler handler;
+
+    private CommandManager commandManager;
 
 
     private static Economy econ = null;
@@ -62,61 +58,66 @@ public class SimpleBeacons extends JavaPlugin {
         String messageline2 = "&SimpleBeacons: &6" + this.getDescription().getVersion();
         String messageline3 = "&7Running on: " + getServer().getVersion();
         String messageline4 = "&7Action: &aEnabling plugin&7...";
-        console.sendMessage(TextFormater.sFormatText(line));
-        console.sendMessage(TextFormater.sFormatText(messageline1));
-        console.sendMessage(TextFormater.sFormatText(messageline2));
-        console.sendMessage(TextFormater.sFormatText(messageline3));
-        console.sendMessage(TextFormater.sFormatText(messageline4));
+
+        console.sendMessage(HexUtil.colorify(line));
+        console.sendMessage(HexUtil.colorify(messageline1));
+        console.sendMessage(HexUtil.colorify(messageline2));
+        console.sendMessage(HexUtil.colorify(messageline3));
+        console.sendMessage(HexUtil.colorify(messageline4));
         // Registering all the classes
-        this.dataStorage = new DataStorage(this);
+        handler = new Handler(this);
+
+
+        this.fileManager = new FileManager(this, new LinkedHashSet<>(Arrays.asList(
+                FileLocation.of("beacons.yml", true, false)
+        )));
+
+
+        this.storage = new SQLStorage(this);
         this.messagesData = new MessagesData(this);
         this.messagesHandler = new MessagesHandler(messagesData, this);
+        this.commandManager = new CommandManager(this);
 
         setupEconomy();
 
-        startup();
+        this.fileManager.loadFiles();
 
         this.current = new Current(this, messagesHandler);
         this.legacy = new Legacy(this,messagesHandler);
         this.nbt = new NBT(this, legacy, current);
-        this.beaconHandler = new BeaconHandler(dataStorage, this);
+        this.beaconHandler = new BeaconHandler(storage, this);
+
+        startup();
 
 
-        this.handler = new Handler(this, messagesHandler, beaconHandler);
 
         this.beaconManager = new BeaconManager(beaconHandler, this, messagesHandler);
-        this.beaconManager = beaconManager.startTask(this, beaconHandler);
+        beaconManager.startTask(this, beaconHandler);
 
         this.beaconManagerHeavy = new BeaconManagerHeavy(beaconHandler, this, messagesHandler);
-        this.beaconManagerHeavy = beaconManagerHeavy.startTask(this, beaconHandler);
+        beaconManagerHeavy.startTask(this, beaconHandler);
 
 
 
         // Registering events
         PluginManager pm = Bukkit.getPluginManager();
-        pm.registerEvents(new CloseInventoryEvent(this, handler), this);
-        pm.registerEvents(new InventoryOpenEvent(handler), this);
-        pm.registerEvents(new OnClickEvent(), this);
         pm.registerEvents(new BeaconBreak(messagesHandler, beaconHandler, nbt), this);
         pm.registerEvents(new BeaconPlace(nbt, beaconHandler, messagesHandler, this), this);
-        beaconInteract = new BeaconInteract(messagesHandler, beaconHandler, nbt, handler, this);
+        beaconInteract = new BeaconInteract(messagesHandler, beaconHandler, nbt, this);
         pm.registerEvents(beaconInteract, this);
 
-        modules.add("farm:disabled");
-        modules.add("effects:disabled");
-        modules.add("protect:disabled");
-        modules.add("breed:disabled");
-        modules.add("ore:disabled");
-        modules.add("item:disabled");
+
+
+
 
         registerCommands();
         time = System.currentTimeMillis() - time;
         String lineend = "&a===============[&b" + time + "ms &a]=================";
-        console.sendMessage(TextFormater.sFormatText(lineend));
+        console.sendMessage(HexUtil.colorify(lineend));
     }
 
     public void updateLinking(Player player, BeaconData beaconData){
-        beaconInteract.updateLinking(player, beaconData);
+        beaconInteract.startLinking(player, beaconData);
     }
 
     private boolean setupEconomy() {
@@ -137,48 +138,54 @@ public class SimpleBeacons extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        dataStorage.saveData();
+        storage.closeConnections();
 
     }
 
     private void startup(){
-        dataStorage.setup();
+        storage.createTable();
+
+        //dataStorage.setup();
         messagesData.setup();
         saveDefaultConfig();
+
+        beaconHandler.setup();
     }
 
     public void reload(){
-        dataStorage.reloadData();
-        dataStorage.saveData();
+        beaconHandler.setup();
+
         messagesData.reloadMessages();
+
         reloadConfig();
+
         messagesHandler.reload();
 
-        beaconManagerHeavy.cancel();
-        beaconManager.cancel();
+        fileManager.clear();
+        fileManager.loadFiles();
 
-        this.beaconManagerHeavy = beaconManagerHeavy.startTask(this, beaconHandler);
-        this.beaconManager = beaconManager.startTask(this, beaconHandler);
+
+
+        beaconManagerHeavy.startTask(this, beaconHandler);
+        beaconManager.startTask(this, beaconHandler);
     }
 
-    public List<String> getModules(){
-        return this.modules;
+
+    public FileManager getFileManager(){
+        return this.fileManager;
     }
 
+    /*
+        Needs to be re-done. (Already checked how Songoda does it looks noice)-
+     */
     private void registerCommands() {
 
-        CommandHandler chandler = new CommandHandler(messagesHandler);
+        commandManager.addMainCommand("simplebeacons").addSubCommands(
+                new GiveCommand(this, messagesHandler, nbt),
+                new ReloadCommand(this, messagesHandler),
+                new AboutCommand()
+        );
 
-        //Registers the command /example which has no arguments.
-        chandler.register("simplebeacons", new MainCommand(this, handler, messagesHandler));
 
-        //Registers the command /example args based on args[0] (args)
-        chandler.register("give", new GiveCommand(nbt, this, messagesHandler));
-        chandler.register("reload", new ReloadCommand(nbt, this, messagesHandler));
-        chandler.register("about", new AboutCommand(nbt,this,messagesHandler));
-
-        //Tab complete
-        getCommand("simplebeacons").setExecutor(chandler);
-        getCommand("simplebeacons").setTabCompleter(new TabComplete(this));
     }
 }

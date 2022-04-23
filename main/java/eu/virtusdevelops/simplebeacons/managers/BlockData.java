@@ -1,8 +1,8 @@
 package eu.virtusdevelops.simplebeacons.managers;
 
-import org.bukkit.block.Block;
 
 public class BlockData {
+
     private org.bukkit.block.data.BlockData blockData;
     private int x;
     private int y;
@@ -13,6 +13,8 @@ public class BlockData {
         this.y = y;
         this.z = z;
     }
+
+
     public org.bukkit.block.data.BlockData getBlockData() {
         return blockData;
     }

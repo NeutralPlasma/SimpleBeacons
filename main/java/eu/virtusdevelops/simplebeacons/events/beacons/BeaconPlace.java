@@ -37,18 +37,33 @@ public class BeaconPlace implements Listener {
         Block block = event.getBlockPlaced();
         ItemStack itemStack = event.getItemInHand();
         if(itemStack.getType() == Material.BEACON){
+
+            if(simpleBeacons.getConfig().getBoolean("convert_default")){
+                if(player.hasPermission("simplebeacons.place")) {
+                    BeaconLocation location = new BeaconLocation(block.getX(), block.getY(), block.getZ(), block.getWorld().getName());
+                    beaconHandler.addBeacon(new BeaconData(1, "REGENERATION", player.getUniqueId(), location, new ArrayList<>(),new ArrayList<>(), 0));
+                }else {
+                    player.sendMessage(messagesHandler.getMessage("beacons.cantplace"));
+                    event.setCancelled(true);
+                }
+                return;
+            }
+
+
             if(itemStack.hasItemMeta()){
                 int level = nbt.getInt(itemStack, "level");
                 if(level != 0){
                     BeaconLocation location = new BeaconLocation(block.getX(), block.getY(), block.getZ(), block.getWorld().getName());
                     if(player.hasPermission("simplebeacons.place")) {
-                        beaconHandler.addBeacon(new BeaconData(level, "REGENERATION", player.getUniqueId(), location, new ArrayList<>(),new ArrayList<>()));
+                        beaconHandler.addBeacon(new BeaconData(level, "REGENERATION", player.getUniqueId(), location, new ArrayList<>(),new ArrayList<>(), 0));
                     }else {
                         player.sendMessage(messagesHandler.getMessage("beacons.cantplace"));
                         event.setCancelled(true);
                     }
                 }
             }
+
+
         }
     }
 }

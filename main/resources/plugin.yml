@@ -12,6 +12,9 @@ commands:
 depend:
   - Vault
 
+softdepend:
+  - "Multiverse-Core"
+
 permissions:
   simplebeacons.use:
     default: op

@@ -1,7 +1,8 @@
 package eu.virtusdevelops.simplebeacons.storage;
 
 import eu.virtusdevelops.simplebeacons.SimpleBeacons;
-import eu.virtusdevelops.simplebeacons.utils.TextFormater;
+import eu.virtusdevelops.virtuscore.utils.HexUtil;
+import eu.virtusdevelops.virtuscore.utils.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -30,7 +31,7 @@ public class MessagesHandler {
         if(message == null){
             return path;
         }
-        return TextFormater.sFormatText(message);
+        return TextUtils.colorFormat(message);
     }
 
     public String getRawMessage(String path){
@@ -38,14 +39,14 @@ public class MessagesHandler {
     }
 
     public List<String> getList(String path){
-        return TextFormater.colorFormatList(getRawList(path));
+        return TextUtils.colorFormatList(getRawList(path));
     }
 
     public List<String> formatList(List<String> list, String replace, String value){
         List<String> newList = new ArrayList<>();
         for(String st : list){
             st = st.replace(replace, value);
-            newList.add(TextFormater.sFormatText(st));
+            newList.add(HexUtil.colorify(st));
         }
         return newList;
     }
@@ -56,7 +57,7 @@ public class MessagesHandler {
             for(int i = 0; i < replaces.length; i++){
                 st = st.replace(replaces[i], values[i]);
             }
-            newList.add(TextFormater.sFormatText(st));
+            newList.add(TextUtils.colorFormat(st));
         }
         return newList;
     }
@@ -68,7 +69,7 @@ public class MessagesHandler {
                 String[] data = replace.split(":");
                 st = st.replace(data[0], data[1]);
             }
-            newList.add(TextFormater.sFormatText(st));
+            newList.add(TextUtils.colorFormat(st));
         }
         return newList;
     }
@@ -101,7 +102,7 @@ public class MessagesHandler {
                 text = text.replace(replaces[i], values[i]);
             }catch (Exception ignored){}
         }
-        return TextFormater.sFormatText(text);
+        return TextUtils.colorFormat(text);
     }
 
     public List<String> getRawList(String path){
@@ -120,7 +121,7 @@ public class MessagesHandler {
                     message = message.replace(data[0], data[1]);
                 }
             }
-            Bukkit.getConsoleSender().sendMessage(TextFormater.sFormatText(message));
+            Bukkit.getConsoleSender().sendMessage(TextUtils.colorFormat(message));
         }
     }
 

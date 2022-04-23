@@ -33,10 +33,13 @@ public class BeaconBreak implements Listener {
             BeaconLocation location = new BeaconLocation(block.getX(), block.getY(), block.getZ(), block.getWorld().getName());
             BeaconData beaconData = beaconHandler.getBeacon(location);
             if(beaconData != null){
+                if(beaconData.getId() == 0){ event.setCancelled(true);  return;}
+
                 if(player.hasPermission("simplebeacons.break")){
                     beaconHandler.removeBeacon(location);
-
-                    block.getLocation().getWorld().dropItemNaturally(block.getLocation(), nbt.createBeacon(new ItemStack(Material.BEACON), beaconData.level));
+                    event.setCancelled(true);
+                    block.getLocation().getWorld().dropItemNaturally(block.getLocation(), nbt.createBeacon(new ItemStack(Material.BEACON), beaconData.getLevel()));
+                    block.setType(Material.AIR);
                 }else{
                     player.sendMessage(messagesHandler.getMessage("beacons.cantbreak"));
                     event.setCancelled(true);

@@ -18,19 +18,18 @@ import java.util.Collection;
 public class BreedingModul extends Modul {
     @Override
     public void run(BeaconData beaconData, int tickRate, SimpleBeacons simpleBeacons) {
-        Location loc = new Location(Bukkit.getWorld(beaconData.beaconLocation.world), beaconData.beaconLocation.x, beaconData.beaconLocation.y, beaconData.beaconLocation.z);
+        Location loc = beaconData.getBeaconLocation().getBukkitLocation();
         Block block = loc.getBlock();
         if (beaconData.isChunkLoaded()) {
             Beacon beacon = (Beacon) block.getState();
             if (beacon.getTier() > 0) {
                 final Collection<Chunk> chunkList = BlockUtil.aroundChunks(loc.getChunk(), 1);
-                chunkList.stream().filter(Chunk::isLoaded).map(Chunk::getEntities).filter(entities -> entities.length > 0)
+                chunkList.stream().filter(Chunk::isLoaded).map(Chunk::getEntities).filter(entities -> entities.length > 0 && entities.length < 25)
                         .forEach(entities -> Arrays.stream(entities).filter(entity -> entity instanceof Animals).forEach(entity -> {
                             Animals animal = (Animals) entity;
                             if(animal.isAdult() && animal.canBreed()) {
                                 animal.setLoveModeTicks(200);
                             }
-                            //monster.damage(beacon.getTier()*beaconData.level);
                         }));
 
             }

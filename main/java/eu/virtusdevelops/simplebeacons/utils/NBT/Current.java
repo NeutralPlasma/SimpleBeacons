@@ -2,7 +2,7 @@ package eu.virtusdevelops.simplebeacons.utils.NBT;
 
 import eu.virtusdevelops.simplebeacons.SimpleBeacons;
 import eu.virtusdevelops.simplebeacons.storage.MessagesHandler;
-import eu.virtusdevelops.simplebeacons.utils.TextFormater;
+import eu.virtusdevelops.virtuscore.utils.HexUtil;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -71,10 +71,10 @@ public class Current {
         try {
             ItemMeta meta = item.getItemMeta();
             meta = setInt(meta, level, "level");
-            meta.setDisplayName(TextFormater.sFormatText(simpleBeacons.getConfig().getString("beacons." + level + ".name")));
+            meta.setDisplayName(HexUtil.colorify(simpleBeacons.getFileManager().getConfiguration("beacons").getString("beacons." + level + ".name")));
 
             meta.setLore(messagesHandler.formatList(
-                    simpleBeacons.getConfig().getStringList("beacons." + level + ".lore"),
+                    simpleBeacons.getFileManager().getConfiguration("beacons").getStringList("beacons." + level + ".lore"),
                     new String[]{"{level}"}, new String[]{String.valueOf(level)}
             ));
             item.setItemMeta(meta);

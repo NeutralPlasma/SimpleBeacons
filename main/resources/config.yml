@@ -2,6 +2,8 @@ BEACON_TICK_RATE: 400 # How often do beacons give you effects (automaticly calcu
 BEACON_TICK_RATE_HEAVY: 1200 # How often do heavy loads repeat (ore, farm updater)
 debug: false
 
+convert_default: false # converts all default placed beacons into custom ones to level 1
+
 global: # Effects visible in each beacon
   effects:
     - "REGENERATION:1"
@@ -11,97 +13,15 @@ global: # Effects visible in each beacon
     - "DAMAGE_RESISTANCE:1"
     - "INCREASE_DAMAGE:1"
   modules:
-    - "effects"
-    - "farm"
-    - "breed"
-    - "protect"
-    - "ore"
-    - "item"
+    - "EFFECTS"
+    - "FARM"
+    - "BREED"
+    - "PROTECT"
+    - "ORE"
+    - "ITEM"
 
 
-beacons:
-  1:
-    name: "&7Simple beacon" # Specify item name.
-    lore: # Specify item lore.
-      - "&7Level &e{level}"
-      - "&7Place me down!"
-    linkamount: 2
-    linkDistance: 30
-    modules:
-      - "farm"
-      - "effects"
-    effects: # <effectname>:<level> Only visible for this level of beacon.
-      - "ABSORPTION"
-      - "BAD_OMEN"
-      - "BLINDNESS"
-      - "CONDUIT_POWER"
-      - "CONFUSION"
-      - "DAMAGE_RESISTANCE"
-      - "DOLPHINS_GRACE"
-
-  2:
-    name: "&7Simple beacon"
-    price: 10000.0 # Specify price for level up from previus level to this one (Economy)
-    lore:
-      - "&7Level &e{level}"
-      - "&7Place me down!"
-    linkamount: 2
-    linkDistance: 30
-    modules:
-      - "farm"
-      - "effects"
-  3:
-    name: "&7Simple beacon"
-    price: 10000.0
-    lore:
-      - "&7Level &e{level}"
-      - "&7Place me down!"
-    linkamount: 2
-    linkDistance: 30
-    modules:
-      - "farm"
-      - "effects"
-  4:
-    name: "&7Simple beacon"
-    price: 10000.0
-    lore:
-      - "&7Level &e{level}"
-      - "&7Place me down!"
-    linkamount: 2
-    linkDistance: 30
-    modules:
-      - "farm"
-      - "effects"
-  5:
-    name: "&7Simple beacon"
-    price: 10000.0
-    lore:
-      - "&7Level &e{level}"
-      - "&7Place me down!"
-    linkamount: 2
-    linkDistance: 30
-    modules:
-      - "farm"
-      - "effects"
-  6:
-    name: "&7Simple beacon"
-    price: 10000.0
-    lore:
-      - "&7Level &e{level}"
-      - "&7Place me down!"
-    linkamount: 2
-    linkDistance: 30
-    modules:
-      - "farm"
-      - "effects"
-  7:
-    name: "&7Simple beacon"
-    price: 10000.0
-    lore:
-      - "&7Level &e{level}"
-      - "&7Place me down!"
-    linkamount: 2
-    linkDistance: 30
-    modules:
-      - "farm"
-      - "effects"
+#
+# Beacons configuration was moved to
+# beacons.yml due to easier editing
+#

@@ -17,7 +17,7 @@ public class FarmModul extends Modul{
     @Override
     public void run(BeaconData beaconData, int tickrate, SimpleBeacons simpleBeacons) {
 
-        Location loc = new Location(Bukkit.getWorld(beaconData.beaconLocation.world), beaconData.beaconLocation.x, beaconData.beaconLocation.y, beaconData.beaconLocation.z);
+        Location loc = beaconData.getBeaconLocation().getBukkitLocation();
         Block block = loc.getBlock();
         if (beaconData.isChunkLoaded()) {
             Beacon beacon = (Beacon) block.getState();

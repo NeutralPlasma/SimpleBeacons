@@ -2,6 +2,7 @@ package eu.virtusdevelops.simplebeacons.managers.modules;
 
 import eu.virtusdevelops.simplebeacons.SimpleBeacons;
 import eu.virtusdevelops.simplebeacons.data.BeaconData;
+import eu.virtusdevelops.simplebeacons.data.BeaconLocation;
 import eu.virtusdevelops.simplebeacons.utils.BlockUtil;
 import org.bukkit.*;
 import org.bukkit.block.Beacon;
@@ -18,7 +19,7 @@ public class ItemModul extends Modul{
 
     @Override
     public void run(BeaconData beaconData, int tickRate, SimpleBeacons simpleBeacons) {
-        Location loc = new Location(Bukkit.getWorld(beaconData.beaconLocation.world), beaconData.beaconLocation.x, beaconData.beaconLocation.y, beaconData.beaconLocation.z);
+        Location loc = beaconData.getBeaconLocation().getBukkitLocation();
         Block block = loc.getBlock();
         if (beaconData.isChunkLoaded()) {
             Beacon beacon = (Beacon) block.getState();
@@ -27,9 +28,8 @@ public class ItemModul extends Modul{
                 chunkList.stream().filter(Chunk::isLoaded).map(Chunk::getEntities).filter(entities -> entities.length > 0)
                         .forEach(entities -> Arrays.stream(entities).filter(entity -> entity instanceof Item).forEach(entity -> {
                             Item item = (Item) entity;
-                            for (String data : beaconData.linkedLocations) {
-                                String[] info = data.split(":");
-                                Block c = loc.getWorld().getBlockAt(Integer.valueOf(info[1]), Integer.valueOf(info[2]), Integer.valueOf(info[3]));
+                            for (BeaconLocation data : beaconData.getLinkedLocations()) {
+                                Block c = data.getBukkitLocation().getBlock();
                                 if(c.getType() == Material.CHEST) {
                                     Chest chest = (Chest) c.getState();
                                     boolean added = false;

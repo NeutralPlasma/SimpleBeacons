@@ -8,6 +8,7 @@ commands:
   unknownplayer: "&7Could not find player with name: &e{player}&7!"
   notnumber: "&e{input}&7 is not a number!"
   reloadsuccess: "&aSuccessfully reloaded files! Took: &e{time}&ams"
+  wrongSyntax: "Syntax: {syntax}"
 
 linking:
   linked: "&aSuccessfully linked"
@@ -16,6 +17,7 @@ linking:
   stop: "&7Stopped linking process"
   alreadylinked: "&cThis container is already linked to this beacon!"
   cancel: "&cCanceled linking!"
+  linking_in_progress: "&7You're in linking progress, to stop it &cSHIFT R-CLICK &7a block!"
 
 
 beacons:
@@ -98,10 +100,12 @@ effects_colors: # RGB (r,g,b)
 
 modules:
   format: "&6{module} &7{status}"
-  farm: "Farm"
-  effects: "Effects"
-  protect: "Protection"
-  breed: "Breeding"
+  FARM: "Farm"
+  EFFECTS: "Effects"
+  PROTECT: "Protection"
+  BREED: "Breeding"
+  ORE: "Mining"
+  ITEM: "Item"
 
 effects:
   format: "&6{effect} &7{level}"

@@ -1,6 +1,7 @@
 package eu.virtusdevelops.simplebeacons.utils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ListUtil {
@@ -16,4 +17,24 @@ public class ListUtil {
 
         return batches;
     }
+
+    public static <T> List<String> convertToList(Collection<T> collection, ConversionStrategy<T> strategy) {
+
+        List<String> converted = new ArrayList<>(collection.size());
+
+        for (T obj : collection) {
+            String convert = strategy.convertToString(obj);
+            if (convert != null) converted.add(convert);
+        }
+
+        return converted;
+    }
+
+    public static interface ConversionStrategy<T> {
+
+        public String convertToString(T input);
+
+    }
+
+
 }
